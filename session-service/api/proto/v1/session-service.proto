@@ -1,0 +1,36 @@
+syntax = "proto3";
+
+package sessionservice;
+
+import "google/api/annotations.proto";
+
+//option go_package = "github.com/develamit/go-grpc-gateway/api/proto/v1";
+option go_package = "github.com/develamit/go-grpc-gateway/session-service/api/proto/v1";
+
+// Here is the overall greeting service definition where we define all our endpoints
+service Session {
+  // Get method
+  rpc SessionGet (SessionRequest) returns (SessionReply) {
+    option (google.api.http) = {
+      get: "/v1/sessiong"
+    };
+  }
+
+  // Post method
+  rpc SessionPost (SessionRequest) returns (SessionReply) {
+    option (google.api.http) = {
+      post: "/v1/sessionp"
+      body: "*"
+    };
+  }
+}
+
+// The request message containing the user's name
+message SessionRequest {
+  string name = 1;
+}
+
+// The response message containing the greetings
+message SessionReply {
+  string message = 1;
+}
