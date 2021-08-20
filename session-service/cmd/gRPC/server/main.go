@@ -9,6 +9,7 @@ import (
 
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"google.golang.org/grpc"
+	"github.com/develamit/go-grpc-gateway/session-service/pkg/armstatus"
 
 	pb "github.com/develamit/go-grpc-gateway/session-service/api/proto/v1"
 )
@@ -92,5 +93,9 @@ func main() {
 
 	log.Info("Serving gRPC-Gateway on http://0.0.0.0", restport)
 	log.Fatal(gwServer.ListenAndServe())
+
+	// write the status
+	s := armstatus.AStatus{"running"}
+	armstatus.WriteStatus(s)
 }
 
