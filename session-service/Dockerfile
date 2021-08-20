@@ -34,6 +34,8 @@ ENV USER=$user_name
 USER $user_name
 
 RUN /bin/bash /app/utils/go-protoc-install.sh 2>&1 /dev/null
+RUN mkdir -p /app/logs
+RUN mkdir -p /app/state
 
 EXPOSE 4101
 EXPOSE 4102
