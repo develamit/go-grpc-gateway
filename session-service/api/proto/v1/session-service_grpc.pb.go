@@ -7,6 +7,7 @@ import (
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
+	emptypb "google.golang.org/protobuf/types/known/emptypb"
 )
 
 // This is a compile-time assertion to ensure that this generated file
@@ -20,6 +21,10 @@ const _ = grpc.SupportPackageIsVersion7
 type SessionClient interface {
 	// Get method
 	SessionGet(ctx context.Context, in *SessionRequest, opts ...grpc.CallOption) (*SessionReply, error)
+	// Get method - get IP addresss
+	SessionGetIP(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*SessionReply, error)
+	// Get method - get IP addresss
+	SessionStatus(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*SessionReply, error)
 	// Post method
 	SessionPost(ctx context.Context, in *SessionRequest, opts ...grpc.CallOption) (*SessionReply, error)
 }
@@ -41,6 +46,24 @@ func (c *sessionClient) SessionGet(ctx context.Context, in *SessionRequest, opts
 	return out, nil
 }
 
+func (c *sessionClient) SessionGetIP(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*SessionReply, error) {
+	out := new(SessionReply)
+	err := c.cc.Invoke(ctx, "/sessionservice.Session/SessionGetIP", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *sessionClient) SessionStatus(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*SessionReply, error) {
+	out := new(SessionReply)
+	err := c.cc.Invoke(ctx, "/sessionservice.Session/SessionStatus", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *sessionClient) SessionPost(ctx context.Context, in *SessionRequest, opts ...grpc.CallOption) (*SessionReply, error) {
 	out := new(SessionReply)
 	err := c.cc.Invoke(ctx, "/sessionservice.Session/SessionPost", in, out, opts...)
@@ -56,6 +79,10 @@ func (c *sessionClient) SessionPost(ctx context.Context, in *SessionRequest, opt
 type SessionServer interface {
 	// Get method
 	SessionGet(context.Context, *SessionRequest) (*SessionReply, error)
+	// Get method - get IP addresss
+	SessionGetIP(context.Context, *emptypb.Empty) (*SessionReply, error)
+	// Get method - get IP addresss
+	SessionStatus(context.Context, *emptypb.Empty) (*SessionReply, error)
 	// Post method
 	SessionPost(context.Context, *SessionRequest) (*SessionReply, error)
 	mustEmbedUnimplementedSessionServer()
@@ -67,6 +94,12 @@ type UnimplementedSessionServer struct {
 
 func (UnimplementedSessionServer) SessionGet(context.Context, *SessionRequest) (*SessionReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SessionGet not implemented")
+}
+func (UnimplementedSessionServer) SessionGetIP(context.Context, *emptypb.Empty) (*SessionReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SessionGetIP not implemented")
+}
+func (UnimplementedSessionServer) SessionStatus(context.Context, *emptypb.Empty) (*SessionReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SessionStatus not implemented")
 }
 func (UnimplementedSessionServer) SessionPost(context.Context, *SessionRequest) (*SessionReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SessionPost not implemented")
@@ -102,6 +135,42 @@ func _Session_SessionGet_Handler(srv interface{}, ctx context.Context, dec func(
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Session_SessionGetIP_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(emptypb.Empty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SessionServer).SessionGetIP(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/sessionservice.Session/SessionGetIP",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SessionServer).SessionGetIP(ctx, req.(*emptypb.Empty))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Session_SessionStatus_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(emptypb.Empty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SessionServer).SessionStatus(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/sessionservice.Session/SessionStatus",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SessionServer).SessionStatus(ctx, req.(*emptypb.Empty))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _Session_SessionPost_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(SessionRequest)
 	if err := dec(in); err != nil {
@@ -130,6 +199,14 @@ var Session_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "SessionGet",
 			Handler:    _Session_SessionGet_Handler,
+		},
+		{
+			MethodName: "SessionGetIP",
+			Handler:    _Session_SessionGetIP_Handler,
+		},
+		{
+			MethodName: "SessionStatus",
+			Handler:    _Session_SessionStatus_Handler,
 		},
 		{
 			MethodName: "SessionPost",

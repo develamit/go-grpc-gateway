@@ -11,7 +11,8 @@ type AStatus struct {
 
 func WriteStatus(astat AStatus) {
 	file, _ := json.MarshalIndent(astat, "", " ")
-	_ = ioutil.WriteFile("/app/state/armstate.json", file, 0644)
+	//_ = ioutil.WriteFile("/app/state/armstate.json", file, 0644)
+	_ = ioutil.WriteFile("/tmp/armstate.json", file, 0644)
 }
 
 //func ReadStatus() {

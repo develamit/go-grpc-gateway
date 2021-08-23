@@ -27,6 +27,24 @@ type server struct{
 func NewServer() *server {
 	return &server{}
 }
+
+/*
+// Get method - get IP addresss
+  rpc SessionGetIP (google.protobuf.Empty) returns (SessionReply) {
+    option (google.api.http) = {
+      get: "/v1/ip"
+    };
+  }
+
+  // Get method - get IP addresss
+  rpc SessionStatus (google.protobuf.Empty) returns (SessionReply) {
+    option (google.api.http) = {
+      get: "/v1/status"
+    };
+  }
+*/
+
+
 // Get
 func (s *server) SessionGet(ctx context.Context, in *pb.SessionRequest) (*pb.SessionReply, error) {
 	log.Info("[GET] Received: ", in.GetName())
@@ -62,7 +80,6 @@ func main() {
 	pb.RegisterSessionServer(s, &server{})
 	// Serve gRPC server
 	log.Info("server listening at: ", lis.Addr())
-	//log.Println("Serving gRPC on 0.0.0.0:8080")
 	go func() {
 		log.Fatalln(s.Serve(lis))
 	}()
@@ -92,10 +109,12 @@ func main() {
 	}
 
 	log.Info("Serving gRPC-Gateway on http://0.0.0.0", restport)
+	// write the status
+	astatus := armstatus.AStatus{
+		State: "running",
+	}
+	armstatus.WriteStatus(astatus)
 	log.Fatal(gwServer.ListenAndServe())
 
-	// write the status
-	s := armstatus.AStatus{"running"}
-	armstatus.WriteStatus(s)
 }
 

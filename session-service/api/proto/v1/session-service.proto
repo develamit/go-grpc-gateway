@@ -3,8 +3,8 @@ syntax = "proto3";
 package sessionservice;
 
 import "google/api/annotations.proto";
+import "google/api/empty.proto";
 
-//option go_package = "github.com/develamit/go-grpc-gateway/api/proto/v1";
 option go_package = "github.com/develamit/go-grpc-gateway/session-service/api/proto/v1";
 
 // Here is the overall greeting service definition where we define all our endpoints
@@ -13,6 +13,20 @@ service Session {
   rpc SessionGet (SessionRequest) returns (SessionReply) {
     option (google.api.http) = {
       get: "/v1/sessiong"
+    };
+  }
+
+  // Get method - get IP addresss
+  rpc SessionGetIP (google.protobuf.Empty) returns (SessionReply) {
+    option (google.api.http) = {
+      get: "/v1/ip"
+    };
+  }
+
+  // Get method - get IP addresss
+  rpc SessionStatus (google.protobuf.Empty) returns (SessionReply) {
+    option (google.api.http) = {
+      get: "/v1/status"
     };
   }
 
